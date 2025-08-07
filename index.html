@@ -161,7 +161,7 @@
             resultText.textContent = '처리 중...';
 
             try {
-                const response = await fetch('/api/swear-filter', {
+                const response = await fetch('0.0.0.0:7600/api/swear-filter', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -172,14 +172,14 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`status ${response.status}`);
                 }
 
                 const data = await response.json();
                 
                 resultContainer.className = 'result-container success';
                 resultText.className = 'result-text';
-                resultText.textContent = data.filtered_text || data.result || '필터링 완료';
+                resultText.textContent = data.message || data.result || '필터링 완료';
 
             } catch (error) {
                 resultContainer.className = 'result-container error';

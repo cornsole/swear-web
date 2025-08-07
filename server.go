@@ -19,11 +19,9 @@ func main() {
 
 	// Routes
 	e.GET("/", index)
-	e.POST("/api/swear-filter", func(c echo.Context) error {
+	e.POST("0.0.0.0:7600/api/swear-filter", func(c echo.Context) error {
 		// 요청 처리 로직
-		return c.JSON(http.StatusOK, map[string]string{
-			"filtered_text": "사랑해요",
-		})
+		return c.JSON(http.StatusOK, map[string]string{})
 	})
 
 	// Start server
