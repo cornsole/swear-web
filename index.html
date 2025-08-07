@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swear Filter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1f1f1f 0%, #3f3f3f 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .input-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        #textInput {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        #textInput:focus {
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        #textInput::placeholder {
+            color: #adb5bd;
+        }
+
+        .hint {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .result-container {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .result-text {
+            font-size: 1.1rem;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .loading {
+            color: #667eea;
+            font-style: italic;
+        }
+
+        .error {
+            color: #dc3545;
+            border-left-color: #dc3545;
+        }
+
+        .success {
+            color: #28a745;
+            border-left-color: #28a745;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            #textInput {
+                font-size: 1rem;
+                padding: 12px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Swear-filter</h1>
+        
+        <div class="input-container">
+            <input 
+                type="text" 
+                id="textInput" 
+                placeholder="필터링할 텍스트를 입력하세요..."
+                autocomplete="off"
+            >
+            <div class="hint">입력하고 엔터를 누르면 API에 전송됩니다</div>
+        </div>
+
+        <div class="result-container" id="resultContainer">
+            <div class="result-text" id="resultText">
+                여기에 결과값이 출력됩니다
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const textInput = document.getElementById('textInput');
+        const resultContainer = document.getElementById('resultContainer');
+        const resultText = document.getElementById('resultText');
+
+        textInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                const inputValue = textInput.value.trim();
+                if (inputValue) {
+                    sendToAPI(inputValue);
+                }
+            }
+        });
+
+        async function sendToAPI(text) {
+            resultContainer.className = 'result-container';
+            resultText.className = 'result-text loading';
+            resultText.textContent = '처리 중...';
+
+            try {
+                const response = await fetch('/api/swear-filter', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        text: text
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                resultContainer.className = 'result-container success';
+                resultText.className = 'result-text';
+                resultText.textContent = data.filtered_text || data.result || '필터링 완료';
+
+            } catch (error) {
+                resultContainer.className = 'result-container error';
+                resultText.className = 'result-text';
+                resultText.textContent = `오류가 발생했습니다: ${error.message}`;
+            }
+        }
+
+        textInput.focus();
+    </script>
+</body>
+</html>

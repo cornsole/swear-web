@@ -1,0 +1,15 @@
+{
+    "time":"2025-08-07T11:33:22.612546743+09:00",
+    "id":"",
+    "remote_ip":"192.168.0.15",
+    "host":"192.168.0.26:8080",
+    "method":"GET",
+    "uri":"/",
+    "user_agent":"Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+    "status":200,
+    "error":"",
+    "latency":2985,
+    "latency_human":"2.985µs",
+    "bytes_in":0,
+    "bytes_out":13
+}
