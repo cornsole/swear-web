@@ -1,4 +1,4 @@
-#include iostream
+#include <iostream>
 using namespace std;
 
 int main() {
@@ -13,15 +13,15 @@ int main() {
 			}
 		}
 		//cout << num[max] << '\n';
-		temp = num[10-1];
+		temp = num[10-i];
 		num[10 - i] = num[max];
 		num[max] = temp;
 
-		for (int i = 0;i < 11;i++) {
-			cout << num[i] << ' ';
-		}
-		cout << '\n';
 	}
-
+    
+    for (int i = 0;i < 11;i++) {
+    	cout << num[i] << ' ';
+    }
+    cout << '\n';
 
 }
