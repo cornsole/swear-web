@@ -4,7 +4,8 @@ using namespace std;
 int main() {
 	int board[3][3] = {0};
 	int x, y, turn=0;
-	while (1) {
+    int gameFinish=0;
+	while (gameFinish!=0) {
 		turn++;
 		cin >> x >> y;
 		// 선택된 장소인지 확인
@@ -33,13 +34,27 @@ int main() {
 			}
 
 			// 승부 확인
-			for (int i = 0;i < 3;i++) {
-				for (int j = 0;j < 3;j++) {
-					if (i == j && board[i][j]==1) {
+            for (int i=0;i<3;i++){
+                int wideCountX=0;
+                int wideCountO=0;
+                for (int j=0;j<3;j++){
+                    if(board[i][j]==1){
+                        wideCountX++;
+                    }else if(board[i][j]==2){
+                        wideCountO++;
+                    }
+                }
+                if(wideCountX==3){
+                    cout << "X승리";
+                    break;
+                }else if(wideCountO==3){
+                    cout << "O승리";
+                    break;
+                }
 
-					}
-				}
-			}
+                
+            }
+
 		}
 		else {
 			cout << "이미선택된.\n";
